@@ -1,0 +1,16 @@
+name: CI with Reusable Python Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    uses: <your-username>/custom-reusable-workflow/.github/workflows/ci-python.yml@main
+    with:
+      python-version: '3.9'
+      coverage: true
