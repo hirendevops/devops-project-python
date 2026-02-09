@@ -10,7 +10,7 @@ on:
 
 jobs:
   ci:
-    uses: hirendevops/custom-workflow/.github/workflows/ci-python.yml@main
+    uses: hirendevops/custome-workflow/.github/workflows/ci-python.yml@main
     with:
       python-version: '3.9'
       coverage: true
