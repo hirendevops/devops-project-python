@@ -1,16 +1,16 @@
-name: CI with Reusable Python Workflow
+name: Main CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
 
 jobs:
   ci:
-    uses: hirendevops/custome-workflow/.github/workflows/ci-python.yml@main
+    uses: ./.github/workflows/_ci.yml
     with:
-      python-version: '3.9'
-      coverage: true
+      node-version: "20"
+      build-env: "production"
+      run-e2e: true
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
