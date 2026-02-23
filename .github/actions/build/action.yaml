@@ -1,0 +1,15 @@
+name: "Lint & Build"
+runs:
+  using: "composite"
+  steps:
+    - run: npm run lint
+      shell: bash
+    - run: npm run build
+      shell: bash
+      env:
+        NODE_ENV: ${{ inputs.build-env }}
+
+inputs:
+  build-env:
+    default: "production"
+    required: false
