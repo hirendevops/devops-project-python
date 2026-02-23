@@ -1,0 +1,56 @@
+name: CI (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        required: false
+        default: "20"
+      build-env:
+        type: string
+        required: false
+        default: "production"
+      run-e2e:
+        type: boolean
+        required: false
+        default: false
+    secrets:
+      NPM_TOKEN:
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ✅ Using composite action as a step
+      - name: Setup
+        uses: ./.github/actions/setup        # relative path
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      # ✅ Another composite action as a step
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          build-env: ${{ inputs.build-env }}
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup                          # reuse same composite here too
+        uses: ./.github/actions/setup
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: E2E Tests
+        if: ${{ inputs.run-e2e }}
+        run: npm run test:e2e
