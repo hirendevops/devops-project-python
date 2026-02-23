@@ -1,0 +1,26 @@
+name: "Build"
+description: "Build and lint the project"
+
+inputs:
+  build-env:
+    required: false
+    default: "production"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Lint
+      run: npm run lint
+      shell: bash
+
+    - name: Build
+      run: npm run build
+      env:
+        NODE_ENV: ${{ inputs.build-env }}
+      shell: bash
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: dist/
